@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import requests
+from geopy.geocoders import Nominatim
 
 
 def get_employee_data(file_path):
@@ -15,26 +16,34 @@ def get_employee_data(file_path):
     return employee_info
 
 
-def get_route_distance(location_a, location_b):
+def get_latitude_longitude(str_address):
+    geolocator = Nominatim(user_agent="covoiturage")
+    location = geolocator.geocode(str_address)
+    return location.latitude, location.longitude
+
+
+def get_route_distance(address_point_a, address_point_b):
     '''
     uses OSRM API to calculate 'car' distance between two points
     result returned in km
-    :param location_a:
-    :param location_b:
+    :param address_point_a:
+    :param address_point_b:
     :return:
     '''
     api_base_str = 'http://router.project-osrm.org/route/v1/driving/'
-    getStr = '{}/{},{};{},{}?overview=false'.format(api_base_str, location_a.longitude, location_a.latitude,
-                                                    location_b.longitude, location_b.latitude)
+    getStr = '{}/{},{};{},{}?overview=false'.format(api_base_str, address_point_a.longitude, address_point_a.latitude,
+                                                    address_point_b.longitude, address_point_b.latitude)
     optRoute = requests.get(getStr)
     return optRoute.json()['routes'][0]['distance'] / 1000.0
 
 
-def get_employees_distance_matrix(employee_locs):
+def get_employees_distance_matrix(employee_points):
     '''
-    :param employee_locs:
+    :param employee_points:
     :return:
     '''
+
+
 
     num_emp = len(employee_locs)
     dist = np.ndarray((num_emp, num_emp))
@@ -48,17 +57,13 @@ def get_employees_distance_matrix(employee_locs):
     return dist
 
 
-def get_employees_distance_to_target(employee_locs, target_loc):
+def get_employees_distance_to_target(employee_points, target_point):
     '''
-    :param employee_locs:
-    :param target_loc:
-    :return: distance vector of each employee to target_location
+    :param employee_points:
+    :param target_point:
+    :return:
     '''
-    num_emp = len(employee_locs)
-    dist = np.empty(num_emp)
-    for i in range(num_emp):
-        loc_i = employee_locs[i]
-        dist[i] = get_route_distance(loc_i, target_loc)
+    dist = {k: get_route_distance(emp, target_point) for k, emp in employee_points.items()}
     return dist
 
 
@@ -66,18 +71,19 @@ def deg_to_rad(deg_angle):
     return deg_angle * math.pi/180.0
 
 
-def cartesian_coordinates(location_i, central_location, base_latitude):
+def cartesian_coordinates(point, central_point, base_latitude):
     '''
     converts latitude/longitude data points to cartesian coordinates
     using equirectangular projection
-    :param location_i: (.longitude, .latitude): the point for which we want the coordinates
-    :param central_location: (.longitude, .latitude): center of the map
+    :param point: (.longitude, .latitude): the point for which we want the coordinates
+    :param central_point: (.longitude, .latitude): center of the map
     :param base_latitude: (double): the latitude at which projected distances are preserved
     :return:
     '''
     R = 6371
 
-    x = R * deg_to_rad(location_i.longitude - central_location.longitude) * math.cos(deg_to_rad(base_latitude))
-    y = R * deg_to_rad(location_i.latitude - central_location.latitude)
+    x = R * deg_to_rad(point.longitude - central_point.longitude) * math.cos(deg_to_rad(base_latitude))
+    y = R * deg_to_rad(point.latitude - central_point.latitude)
 
     return x, y
+

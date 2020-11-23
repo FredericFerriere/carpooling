@@ -1,38 +1,46 @@
 import numpy as np
 from sklearn.cluster import KMeans
+from addressPoint import AddressPoint
+from utilities.utils import *
 
 
-def optimise_routes(employee_carts, target_cart, max_pass):
-    groups = group_employees(employee_carts, max_pass)
+def global_optimise(emp_addresses, target_address, max_pass):
+    emp_address_dict = {emp_address: AddressPoint(emp_address) for emp_address in emp_addresses}
+    tgt_address_point = AddressPoint(target_address)
+    emp_coords = {k: cartesian_coordinates(p, tgt_address_point, tgt_address_point.latitude)
+                  for k, p in emp_address_dict.items()}
+    groups = group_employees(emp_coords, max_pass)
     res = []
     for g in groups:
-        opt_g = optimise_single_route(g, target_cart)
-        res.append(opt_g)
-
+        opt_g = optimise_group(g)
+        for sub_g in opt_g:
+            res.append(sub_g)
     return res
 
 
-def optimise_single_route(group, target_cart):
-    
-    return group
+def optimise_group(cur_group):
+    """
+    check if cur_group needs to be split further
+    for each sub_group, reorder from furthest to closest to target address
+    :param cur_group:
+    :return: a list of lists of strings (addresses)
+    """
+    return [cur_group]
 
 
-
-def group_employees(employee_carts, max_pass):
-    '''
-    :param employee_carts: employees' cartesian coordinates
+def group_employees(emp_coords, max_pass):
+    """
+    :param emp_coords: employees' cartesian coordinates
     :param max_pass: maximum number of passengers in a car
-    :return: a list of employee groups. Each element in the list is a list of employee coordinates
-    '''
-    # starting from full list, divide list using k-means with k = 2
-    # apply iteratively to each element (itself a list) obtained until number of employees in each list <= max_pass
-    cur_list = [[emp for emp in employee_carts]]
-    cur_max = len(employee_carts)
+    :return: a list of employee groups. Each element in the list is a list of employee addresses
+    """
+    cur_list = [[k for k in emp_coords]]
+    cur_max = len(emp_coords)
     while cur_max > max_pass:
         new_list = []
         for sub_list in cur_list:
             if len(sub_list) > max_pass:
-                kmeans = KMeans(n_clusters=2, random_state=4679).fit(np.array(sub_list))
+                kmeans = KMeans(n_clusters=2, random_state=4679).fit(np.array([emp_coords[k] for k in sub_list]))
                 group_A, group_B = [], []
                 for i in range(len(kmeans.labels_)):
                     if kmeans.labels_[i] == 0:
