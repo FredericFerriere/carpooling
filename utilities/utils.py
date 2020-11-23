@@ -42,19 +42,18 @@ def get_employees_distance_matrix(employee_points):
     :param employee_points:
     :return:
     '''
-
-
-
-    num_emp = len(employee_locs)
+    adds = list(employee_points.keys())
+    num_emp = len(adds)
     dist = np.ndarray((num_emp, num_emp))
     for i in range(num_emp):
-        loc_i = employee_locs[i]
+        loc_i = employee_points[adds[i]]
         dist[i, i] = 0
         for j in range(i+1, num_emp):
-            loc_j = employee_locs[j]
+            loc_j = employee_points[adds[j]]
             dist[i, j] = get_route_distance(loc_i, loc_j)
             dist[j, i] = dist[i, j]
-    return dist
+    res = {adds[i]: {adds[j]: dist[i, j] for j in range(num_emp)} for i in range(num_emp)}
+    return res
 
 
 def get_employees_distance_to_target(employee_points, target_point):

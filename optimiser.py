@@ -5,20 +5,22 @@ from utilities.utils import *
 
 
 def global_optimise(emp_addresses, target_address, max_pass):
-    emp_address_dict = {emp_address: AddressPoint(emp_address) for emp_address in emp_addresses}
-    tgt_address_point = AddressPoint(target_address)
-    emp_coords = {k: cartesian_coordinates(p, tgt_address_point, tgt_address_point.latitude)
-                  for k, p in emp_address_dict.items()}
-    groups = group_employees(emp_coords, max_pass)
-    res = []
-    for g in groups:
-        opt_g = optimise_group(g)
+    emp_points = {emp_address: AddressPoint(emp_address) for emp_address in emp_addresses}
+    tgt_point = AddressPoint(target_address)
+    emp_coords = {k: cartesian_coordinates(p, tgt_point, tgt_point.latitude)
+                  for k, p in emp_points.items()}
+    tgt_dist_mat = get_employees_distance_to_target(emp_points, tgt_point)
+    emp_dist_mat = get_employees_distance_matrix(emp_points)
+    init_groups = group_employees(emp_coords, max_pass)
+    final_groups = []
+    for g in init_groups:
+        opt_g = optimise_group(g, emp_dist_mat, tgt_dist_mat)
         for sub_g in opt_g:
-            res.append(sub_g)
-    return res
+            final_groups.append(sub_g)
+    return final_groups
 
 
-def optimise_group(cur_group):
+def optimise_group(cur_group, emp_dist_matrix, tgt_dist_matrix):
     """
     check if cur_group needs to be split further
     for each sub_group, reorder from furthest to closest to target address
