@@ -10,5 +10,6 @@ python -m ipykernel install --user --name covoiturage
 jupyter lab
 
 conda install geopy
+conda install -c conda-forge aiohttp
 
 http://project-osrm.org/docs/v5.23.0/api/#general-options

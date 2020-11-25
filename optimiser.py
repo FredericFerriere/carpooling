@@ -14,20 +14,57 @@ def global_optimise(emp_addresses, target_address, max_pass):
     init_groups = group_employees(emp_coords, max_pass)
     final_groups = []
     for g in init_groups:
-        opt_g = optimise_group(g, emp_dist_mat, tgt_dist_mat)
-        for sub_g in opt_g:
-            final_groups.append(sub_g)
+        final_groups += optimise_group(g, emp_dist_mat, tgt_dist_mat, emp_coords)
     return final_groups
 
 
-def optimise_group(cur_group, emp_dist_matrix, tgt_dist_matrix):
-    """
-    check if cur_group needs to be split further
-    for each sub_group, reorder from furthest to closest to target address
-    :param cur_group:
-    :return: a list of lists of strings (addresses)
-    """
-    return [cur_group]
+def optimise_group(cur_group, emp_dist_matrix, tgt_dist_matrix, emp_coords):
+    sorted_group = sorted(cur_group, key=lambda emp: tgt_dist_matrix[emp])
+    fin_paths = [[sorted_group[0]]]
+    for i in range(1, len(sorted_group)):
+        dist_to_tgt = tgt_dist_matrix[sorted_group[i]]
+        ind = np.argmin([emp_dist_matrix[sorted_group[i]][path[-1]] for path in fin_paths])
+        dist_to_path = emp_dist_matrix[sorted_group[i]][fin_paths[ind][-1]]
+        if dist_to_path < dist_to_tgt:
+            fin_paths[ind].append(sorted_group[i])
+        else:
+            fin_paths.append([sorted_group[i]])
+    return fin_paths
+
+
+def optimise_group_old(cur_group, emp_dist_matrix, tgt_dist_matrix, emp_coords):
+    # sort furthest to closest
+    sorted_group = sorted(cur_group, key=lambda emp: tgt_dist_matrix[emp], reverse=True)
+    print('sorted_group : {}'.format(sorted_group))
+    # get path length
+    path_length = 0
+    for i in range(len(cur_group)-1):
+        path_length += emp_dist_matrix[sorted_group[i]][sorted_group[i+1]]
+    path_length += tgt_dist_matrix[sorted_group[-1]]
+    print('path length: {}'.format(path_length))
+
+    # compare with individual paths
+    ind_length = sum([tgt_dist_matrix[emp] for emp in cur_group])
+    print('ind length: {}'.format(ind_length))
+
+    res = []
+
+    if path_length > ind_length:
+        # split cur_group in 2
+        print('splitting further')
+        group_A, group_B = [], []
+        kmeans = KMeans(n_clusters=2, random_state=4679).fit(np.array([emp_coords[k] for k in cur_group]))
+        for i in range(len(kmeans.labels_)):
+            if kmeans.labels_[i] == 0:
+                group_A.append(cur_group[i])
+            else:
+                group_B.append(cur_group[i])
+        res = res + optimise_group(group_A, emp_dist_matrix, tgt_dist_matrix, emp_coords)\
+              + optimise_group(group_B, emp_dist_matrix, tgt_dist_matrix, emp_coords)
+    else:
+        res = sorted_group
+
+    return res
 
 
 def group_employees(emp_coords, max_pass):

@@ -19,7 +19,11 @@ def get_employee_data(file_path):
 def get_latitude_longitude(str_address):
     geolocator = Nominatim(user_agent="covoiturage")
     location = geolocator.geocode(str_address)
-    return location.latitude, location.longitude
+    if location is None:
+        res = None, None
+    else:
+        res = location.latitude, location.longitude
+    return res
 
 
 def get_route_distance(address_point_a, address_point_b):
@@ -70,6 +74,10 @@ def deg_to_rad(deg_angle):
     return deg_angle * math.pi/180.0
 
 
+def rad_to_deg(rad_angle):
+    return rad_angle * 180/math.pi
+
+
 def cartesian_coordinates(point, central_point, base_latitude):
     '''
     converts latitude/longitude data points to cartesian coordinates
@@ -86,3 +94,17 @@ def cartesian_coordinates(point, central_point, base_latitude):
 
     return x, y
 
+
+def latitude_longitude_from_cartesians(x, y, central_point, base_latitude):
+    R = 6371
+    longitude = rad_to_deg(x / (R * math.cos(deg_to_rad(base_latitude)))) + central_point.longitude
+    latitude = rad_to_deg(y / R) + central_point.latitude
+    return latitude, longitude
+
+
+def path_distance(path, emp_dist_mat, tgt_dist_mat):
+    # path expected to be sorted from closest to furthest to target.
+    dist = tgt_dist_mat[path[0]]
+    for i in range(len(path)-1):
+        dist += emp_dist_mat[path[i]][path[i+1]]
+    return dist
