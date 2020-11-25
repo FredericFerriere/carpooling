@@ -32,6 +32,26 @@ def optimise_group(cur_group, emp_dist_matrix, tgt_dist_matrix, emp_coords):
     return fin_paths
 
 
+async def optimise_group_optimised(cur_group, emp_points, tgt_point):
+    emp_sub_points = {el: emp_points[el] for el in cur_group}
+    emp_dist_matrix = await get_employees_distance_matrix_optimised(emp_sub_points)
+    tgt_dist_matrix = await get_employees_distance_to_target_optimised(emp_sub_points, tgt_point)
+    sorted_group = sorted(cur_group, key=lambda emp: tgt_dist_matrix[emp])
+    fin_paths = [[sorted_group[0]]]
+    for i in range(1, len(sorted_group)):
+        dist_to_tgt = tgt_dist_matrix[sorted_group[i]]
+        ind = np.argmin([emp_dist_matrix[sorted_group[i]][path[-1]] for path in fin_paths])
+        dist_to_path = emp_dist_matrix[sorted_group[i]][fin_paths[ind][-1]]
+        if dist_to_path < dist_to_tgt:
+            fin_paths[ind].append(sorted_group[i])
+        else:
+            fin_paths.append([sorted_group[i]])
+    res = []
+    for g in fin_paths:
+        res.append([g, sum([tgt_dist_matrix[el] for el in g]), path_distance(g, emp_dist_matrix, tgt_dist_matrix)])
+    return res
+
+
 def optimise_group_old(cur_group, emp_dist_matrix, tgt_dist_matrix, emp_coords):
     # sort furthest to closest
     sorted_group = sorted(cur_group, key=lambda emp: tgt_dist_matrix[emp], reverse=True)

@@ -1,8 +1,8 @@
 first_name;last_name;address
-x;x;1 Route de Thônes,  74940
+x;x;1 Route de Thônes,  74940 Annecy France
 x;x;1 Chemin du Roc de Chère,  74290
 x;x;1 A 41,  74960
-x;x;1 Voie des Aravis,  74940
+x;x;255 Route des Argos, 74940 Annecy
 x;x;1 D 41,  74320
 x;x;1 Chemin de l'Abbaye,  74940
 x;x;1 Route du Parroi,  74600
@@ -14,18 +14,18 @@ x;x;1 Avenue d'Albigny,  74000
 x;x;1 Poisy,  74330
 x;x;1 Chemin des Rippes,  74330
 x;x;1 Chemin du Crêt Sedat,  74600
-x;x;1 complexe sportif de sous-lettraz,  74370
+x;x;95 Route des Rebattes, 74370 Epagny Metz-Tessy
 x;x;1 Magic Bazar,  74000
-x;x;1 Chemin de Sainte-Catherine,  74000
+x;x;20 Route du Semnoz, 74000 Annecy
 x;x;1 Route du Semnoz,  74000
 x;x;1 Menthon-Saint-Bernard,  74290
-x;x;1 Rue des Chasseurs,  74000
+x;x;1 Rue des Chasseurs,  74000 Annecy
 x;x;1 Fleurs,  74000
-x;x;1 Rue des Pervenches,  74960
+x;x;1 Rue des Pervenches,  74960 Annecy
 x;x;1 Chemin de la Canaud,  74600
 x;x;1 Route de Morat,  74290
-x;x;1 Clinique Regina,  74000
-x;x;1 Sentier de Talabar,  74940
+x;x;408 Route d'Albertville, 74320 Sévrier
+x;x;10 Chemin de la Maveria, 74000 Veyrier-du-Lac
 x;x;1 Chabloux,  74290
 x;x;1 Les Mottes,  74290
 x;x;1 Voie Verte du Lac d'Annecy,  74000
@@ -33,16 +33,16 @@ x;x;1 Laval,  74370
 x;x;1 Route de Thônes,  74230
 x;x;1 Route de Cran Gevrier,  74650
 x;x;1 Annecy,  74000
-x;x;1 Voie Communale des Villards,  74290
+x;x;186 Route des Villards, 74290 Alex
 x;x;1 Boulevard de la Corniche,  74000
 x;x;1 Chemin des Chez Borny,  74330
-x;x;1 Chemin de Bois Rosset,  74370
+x;x;222 Impasse Impériale, 74370 Saint-Martin-Bellevue
 x;x;1 Route de Sillingy,  74330
-x;x;1 Impasse des Vergers,  74940
+x;x;3 Rue de Vénétie, 74940 Annecy
 x;x;1 Route de la Fruitière,  74650
 x;x;1 Rue du Quechat,  74940
 x;x;1 Sevrier,  74320
-x;x;1 Sentier des Rochers,  74000
+x;x;74 Avenue de la République, 74960 Annecy
 x;x;1 Chemin des Penoz,  74290
 x;x;1 Chemin de Chantapot,  74290
 x;x;1 Chemin des Bruyères,  74410
@@ -50,11 +50,11 @@ x;x;1 Chemin du Crêt du Faux,  74290
 x;x;1 Route du Pont du Trésor,  74330
 x;x;1 Bistro des Tilleuls,  74000
 x;x;33,  74370
-x;x;1 Chemin de la Fourmi,  74320
+x;x;50 chemin de la Sauge, 74320 Sévrier
 x;x;1 Plage du Plan,  74290
-x;x;1 Sentier de la Crête,  74000
-x;x;1 RAM - Relais d'Assistants Maternels,  74000
-x;x;1 Promenade du Thiou,  74960
+x;x;10 Chemin Falquet, 74000 Annecy
+x;x;5 Place des Rhododendrons, 74000 Annecy
+x;x;1 Rue de l'Égalité, 74960 Annecy
 x;x;1 Rue du Barrioz,  74370
 x;x;1 Rue des Sports,  74600
 x;x;1 Plage de La Brune,  74290
@@ -65,7 +65,7 @@ x;x;1 Impasse des Avollions,  74320
 x;x;1 Stilbag,  74000
 x;x;1 Chemin de Villaz,  74370
 x;x;1 Pringy,  74370
-x;x;1 Service départemental d'incendie et de secours de Haute-Savoie,  74960
+x;x;6 Rue du Nant, 74960 Meythet
 x;x;1 Route d'Annecy,  74600
 x;x;1 Chemin des Fléoles,  74600
 x;x;1 Route des Creuses,  74650
@@ -76,26 +76,26 @@ x;x;1 Route de la Gare,  74330
 x;x;1 Avenue de France,  74000
 x;x;1 Route du Semnoz,  74600
 x;x;1 Chemin de Plan-Morget,  74370
-x;x;1 Marché Franprix,  74000
-x;x;1 Chemin des Alouettes,  74960
+x;x;7 Rue de l'Annexion, 74000 Annecy
+x;x;4b Chemin des Allueges, 74000 Annecy
 x;x;1 Route de Vieugy,  74600
 x;x;1 Chemin des Marais,  74330
 x;x;1 Promenade Philibert d'Orlye,  74290
 x;x;1 Impasse de la Golta,  74150
 x;x;7,  74000
 x;x;1 Rue du Perthuis,  74330
-x;x;1 Auberge de Jeunesse,  74000
+x;x;4 Route du Semnoz, 74000 Annecy
 x;x;1 Route des Argos,  74940
 x;x;1 Avenue des Hirondelles,  74000
 x;x;1 Chemin des Fins Nord,  74000
 x;x;1 Z4Meythet,  74960
 x;x;1 Chemin de La Pierre des Trois Croix,  74370
-x;x;1 Agip Buffard,  74000
+x;x;17 Avenue de Chambéry, 74000 Annecy
 x;x;1 Route des Vignes,  74370
-x;x;1 Chez Pen,  74000
+x;x;11 Avenue Berthollet, 74000 Annecy
 x;x;1 Centre Horticole de l'Agglomération d'Annecy,  74000
 x;x;1 Chemin des Favières,  74330
 x;x;1 Route de Thônes,  74290
-x;x;1 Groupe Scolaire Carnot,  74000
-x;x;1 Clos du Buisson,  74940
+x;x;86 Rue Carnot, 74000 Annecy
+x;x;2 bis Clos du Buisson, 74940 Annecy
 x;x;1 Route du Pont d'Onnex,  74370

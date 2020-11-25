@@ -2,7 +2,11 @@ import math
 import numpy as np
 import requests
 from geopy.geocoders import Nominatim
+from geopy.geocoders import BANFrance
+import aiohttp
+import asyncio
 
+from aiohttp import ClientSession
 
 def get_employee_data(file_path):
     '''
@@ -17,12 +21,70 @@ def get_employee_data(file_path):
 
 
 def get_latitude_longitude(str_address):
-    geolocator = Nominatim(user_agent="covoiturage")
+    #geolocator = Nominatim(user_agent="covoiturage")
+    geolocator = BANFrance()
     location = geolocator.geocode(str_address)
     if location is None:
         res = None, None
     else:
         res = location.latitude, location.longitude
+    return res
+
+
+async def get_route_distance_optimised(address_point_a, address_point_b, session):
+    '''
+    uses OSRM API to calculate 'car' distance between two points
+    result returned in km
+    :param address_point_a:
+    :param address_point_b:
+    :param session:
+    :return:
+    '''
+
+    api_base_str = 'http://router.project-osrm.org/route/v1/driving/'
+    getStr = '{}/{},{};{},{}?overview=false'.format(api_base_str, address_point_a.longitude, address_point_a.latitude,
+                                                    address_point_b.longitude, address_point_b.latitude)
+
+    optRoute = await session.request(method='GET', url=getStr)
+    optRoute_json = await optRoute.json()
+
+    return optRoute_json['routes'][0]['distance'] / 1000.0
+
+
+async def get_employees_distance_to_target_optimised(employee_points, target_point):
+    '''
+    :param employee_points:
+    :param target_point:
+    :return:
+    '''
+    emp_list = list(employee_points.keys())
+    async with ClientSession() as session:
+        ret_list = await asyncio.gather(
+            *[get_route_distance_optimised(employee_points[emp], target_point, session) for emp in emp_list])
+    dist = {emp_list[k]: ret_list[k] for k in range(len(emp_list))}
+    return dist
+
+
+async def get_employees_distance_matrix_optimised(employee_points):
+    adds = list(employee_points.keys())
+    num_emp = len(adds)
+    # print(num_emp)
+    dist = np.ndarray((num_emp, num_emp))
+    async with ClientSession() as session:
+        ret_list = await asyncio.gather(
+            *[get_route_distance_optimised(employee_points[adds[i]], employee_points[adds[j]], session) for i in
+              range(num_emp - 1) for j in range(i + 1, num_emp)])
+        # print(len(ret_list))
+    count = 0
+    for i in range(num_emp):
+        dist[i, i] = 0
+        for j in range(i + 1, num_emp):
+            ind = int(i * (num_emp - 1 - 0.5 * (i - 1)) + j - i - 1)
+            # print('i: {}, j: {}, count: {}, ind: {}'.format(i,j, count, ind))
+            dist[i, j] = ret_list[ind]
+            dist[j, i] = dist[i, j]
+            count += 1
+    res = {adds[i]: {adds[j]: dist[i, j] for j in range(num_emp)} for i in range(num_emp)}
     return res
 
 
