@@ -72,14 +72,23 @@ Heuristics used:
 5) for each path, we also calculate non optimised distances (individual path from employees to target address) and optimised path distance
 
 
+## Going further
+
+1) The current algorithm assumes all employees have a car and may be the starting point of a chain. This assumption should be relaxed for a more realistic approach.  
+2) Incorporating carpooling areas in the algorithm on top of employee addresses.  
+3) Adding public transport network in the algorithm (much more complicated)  
+4) Incorporating a metric for vehicle emissions and using this metric rather than total distance in the minimization algorithm.
+
+
+
 ## Packages Required
 
 ### setting up the Virtual environment
 
-conda config --prepend channels conda-forge  
-conda create -n covoiturage --strict-channel-priority osmnx jupyterlab  
-conda install geopy
-conda install -c conda-forge aiohttp
-conda activate covoiturage  
-python -m ipykernel install --user --name covoiturage  
-jupyter lab
+$ conda config --prepend channels conda-forge  
+$ conda create -n covoiturage --strict-channel-priority osmnx jupyterlab  
+$ conda install geopy
+$ conda install -c conda-forge aiohttp
+$ conda activate covoiturage  
+$ python -m ipykernel install --user --name covoiturage  
+$ jupyter lab
