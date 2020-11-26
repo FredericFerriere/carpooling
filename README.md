@@ -15,7 +15,7 @@ Using Annecy's city council as the target destination and 100 randomly generated
 
 ### Initial map
 
-![](./images/initial_map.png)
+![](./images/initial_map.png)  
 <em>
 Blue marker = target destination  
 Red dots = employees' addresses
@@ -25,12 +25,14 @@ Red dots = employees' addresses
 
 | Set up | Distance | Number of cars |
 | --- | --- | --- |
-| No sharing | 638 | 100 |
-| Carpooling | 320 | 40 |
+| No sharing | 638 km | 100 |
+| Carpooling | 320 km | 40 |
 
 Total distance saved: 318 km
 
 ### Focus on a group
+
+The 3 red points below represent employees identified as carpoolers by the algorithm.  
 
 ![](./images/group_focus.png)
 
@@ -60,6 +62,8 @@ Points are grouped using k-means algorithm. We cannot know k a priori so startin
 
 At this stage, we only get candidate groups. We need to check whether it would be optimal to further split that group.  
 Nota: a group may contain a maximum of four points  
+Distances between points are calculated using osrm API (see http://project-osrm.org/)  
+
 Heuristics used:  
 1) sort points from closest to furthest from target address  
 2) one path will necessarily go from closest point to target address  
@@ -68,16 +72,14 @@ Heuristics used:
 5) for each path, we also calculate non optimised distances (individual path from employees to target address) and optimised path distance
 
 
-Packages
+## Packages Required
 
-Virtual environment
-conda config --prepend channels conda-forge
-conda create -n covoiturage --strict-channel-priority osmnx jupyterlab
-conda activate covoiturage
-python -m ipykernel install --user --name covoiturage
-jupyter lab
+### setting up the Virtual environment
 
+conda config --prepend channels conda-forge  
+conda create -n covoiturage --strict-channel-priority osmnx jupyterlab  
 conda install geopy
 conda install -c conda-forge aiohttp
-
-#http://project-osrm.org/docs/v5.23.0/api/#general-options
+conda activate covoiturage  
+python -m ipykernel install --user --name covoiturage  
+jupyter lab
