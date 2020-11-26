@@ -30,6 +30,26 @@ Red dots = employees' addresses
 
 Total distance saved: 318 km
 
+### Yearly Environmental impact
+
+Assumptions:  
+228 working days  
+Average car consumption: 8L/100km  
+CO2 emissions: 0.343t/1000km (source https://co2.myclimate.org/)
+
+| Set up | Yearly Distance | CO2 (t) |
+| --- | --- | --- |
+| No sharing | 290 928 km | 99.8 |
+| Carpooling | 145 920 km | 50.05 |
+| Savings | 145 008 km | 49.75 |  
+
+<em> Yearly distance = 2 * one-way distance * 228 </em>
+
+<b>
+That is almost 50 tons of CO2 emission saved yearly, or 0.5 t per employee, a substantial portion of the 8.4 t each EU citizen produces yearly on average (source https://co2.myclimate.org/).
+</b>
+
+
 ### Focus on a group
 
 The 3 red points below represent employees identified as carpoolers by the algorithm.  
