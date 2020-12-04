@@ -16,7 +16,7 @@ async def main():
     tgt_point = AddressPoint(target_address)
     print('retrieving GPS coordinates...')
     emp_points = {emp_address: AddressPoint(emp_address) for emp_address in employee_addresses}
-    print('retrieving GPS coordinates Done')
+    print('retrieving GPS coordinates: Done')
     emp_coords = {k: cartesian_coordinates(p, tgt_point, tgt_point.latitude) for k, p in emp_points.items()}
     init_groups = group_employees(emp_coords, max_pass)
     print('initial grouping done')
@@ -40,7 +40,7 @@ def print_main_statistics(groups):
     print('number of groups: {}'.format(numGroups))
     print('Sum of individual distances: {:.1f} km'.format(indDistance))
     print('Total optimised distance: {:.1f} km'.format(optDistance))
-    print('Distance saved (km): {:.1f}'.format(indDistance-optDistance))
+    print('Total Distance saved (km): {:.1f}'.format(indDistance-optDistance))
 
 
 if __name__ == '__main__':
